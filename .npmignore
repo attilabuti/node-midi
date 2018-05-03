@@ -2,5 +2,6 @@
 .editorconfig
 .gitignore
 .travis.yml
+appveyor.yml
 .lock-wscript
 build/*
