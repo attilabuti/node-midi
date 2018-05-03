@@ -2,8 +2,6 @@ var should = require('should');
 var EventEmitter = require('events').EventEmitter;
 var Midi = require('../midi');
 
-var isWin = process.platform === "win32";
-
 describe('midi.input', function() {
     it('should raise when not called with new', function() {
         (function() {
@@ -78,18 +76,6 @@ describe('midi.input', function() {
             input.closePort();
             input.isPortOpen().should.be.false();
         });
-
-        if (!isWin) { // MidiInWinMM::openVirtualPort: cannot be implemented in Windows MM MIDI API!
-            it('should return true if port open for openVirtualPort()', function() {
-                input.openVirtualPort("test");
-                input.isPortOpen().should.be.true();
-            });
-
-            it('should return false if port closed for openVirtualPort()', function() {
-                input.closePort();
-                input.isPortOpen().should.be.false();
-            });
-        }
     });
 
     describe('.openVirtualPort', function() {
@@ -192,18 +178,6 @@ describe('midi.output', function() {
             output.closePort();
             output.isPortOpen().should.be.false();
         });
-
-        if (!isWin) { // MidiInWinMM::openVirtualPort: cannot be implemented in Windows MM MIDI API!
-            it('should return true if port open for openVirtualPort()', function() {
-                output.openVirtualPort("test");
-                output.isPortOpen().should.be.true();
-            });
-
-            it('should return false if port closed for openVirtualPort()', function() {
-                output.closePort();
-                output.isPortOpen().should.be.false();
-            });
-        }
     });
 
     describe('.openVirtualPort', function() {

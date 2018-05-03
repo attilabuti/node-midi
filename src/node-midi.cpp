@@ -39,8 +39,7 @@ public:
     {
         try {
             out = new RtMidiOut();
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             out = NULL;
         }
     }
@@ -87,8 +86,7 @@ public:
         try {
             v8::Local<v8::String> result = Nan::New<v8::String>(output->out && output->out->getPortCount() >= portNumber ? output->out->getPortName(portNumber).c_str() : "").ToLocalChecked();
             info.GetReturnValue().Set(result);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             info.GetReturnValue().Set(Nan::New<v8::String>("").ToLocalChecked());
         }
     }
@@ -113,8 +111,7 @@ public:
 
         try {
             output->out->openPort(portNumber);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             ;
         }
 
@@ -146,8 +143,7 @@ public:
 
         try {
             output->out->openVirtualPort(name);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             ;
         }
 
@@ -189,8 +185,7 @@ public:
         }
         try {
             output->out->sendMessage(&messageOutput);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             ;
         }
 
@@ -244,8 +239,7 @@ public:
     {
         try {
             in = new RtMidiIn();
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             in = NULL;
         }
 
@@ -336,8 +330,7 @@ public:
         try {
             v8::Local<v8::String> result = Nan::New<v8::String>(input->in && input->in->getPortCount() >= portNumber ? input->in->getPortName(portNumber).c_str() : "").ToLocalChecked();
             info.GetReturnValue().Set(result);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             info.GetReturnValue().Set(Nan::New<v8::String>("").ToLocalChecked());
         }
     }
@@ -364,8 +357,7 @@ public:
         try {
             input->in->setCallback(&NodeMidiInput::Callback, Nan::ObjectWrap::Unwrap<NodeMidiInput>(info.This()));
             input->in->openPort(portNumber);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             ;
         }
 
@@ -399,8 +391,7 @@ public:
         try {
             input->in->setCallback(&NodeMidiInput::Callback, Nan::ObjectWrap::Unwrap<NodeMidiInput>(info.This()));
             input->in->openVirtualPort(name);
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             ;
         }
 
@@ -426,12 +417,13 @@ public:
             }
 
             input->in->closePort();
-        } catch (RtMidiError& e) {
-            UNREFERENCED_PARAMETER(e);
+        } catch (RtMidiError&) {
             ;
         }
 
-        uv_close((uv_handle_t*)&input->message_async, NULL);
+        if (!uv_is_closing((uv_handle_t*)&input->message_async)) {
+            uv_close((uv_handle_t*)&input->message_async, NULL);
+        }
         return;
     }
 

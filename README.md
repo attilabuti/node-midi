@@ -143,9 +143,7 @@ input.openVirtualPort("Test Input");
 // ... receive MIDI messages ...
 
 // Close the port when done.
-if (input.isPortOpen()) {
-    input.closePort();
-}
+input.closePort();
 ```
 
 The same can be done with output ports.
