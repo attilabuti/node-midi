@@ -2,11 +2,13 @@
 
 # node-midi
 
+This is a "fork" of the [node-midi](https://github.com/justinlatimer/node-midi) package by [Justin Latimer](https://github.com/justinlatimer).
+
 A node.js wrapper for the RtMidi C++ library that provides realtime MIDI I/O.
 RtMidi supports Linux (ALSA & Jack), Macintosh OS X (CoreMidi), and Windows
 (Multimedia).
 
-[![Build Status](https://travis-ci.org/justinlatimer/node-midi.svg)](https://travis-ci.org/justinlatimer/node-midi)
+[![Build Status](https://travis-ci.org/attilabuti/node-midi.svg?branch=master)](https://travis-ci.org/attilabuti/node-midi)
 
 ## Prerequisites
 
@@ -32,24 +34,26 @@ RtMidi supports Linux (ALSA & Jack), Macintosh OS X (CoreMidi), and Windows
 Installation uses node-gyp and requires Python 2.7.2 or higher.
 
 From npm:
-
-    $ npm install midi
+```bash
+$ npm install ab-midi
+```
 
 From source:
-
-    $ git clone https://github.com/justinlatimer/node-midi.git
-    $ cd node-midi/
-    $ npm install
+```bash
+$ git clone https://github.com/attilabuti/node-midi.git
+$ cd node-midi/
+$ npm install
+```
 
 ## Usage
 
 ### Input
 
 ```js
-var midi = require('midi');
+const midi = require('ab-midi');
 
 // Set up a new input.
-var input = new midi.input();
+const input = new midi.input();
 
 // Count the available input ports.
 input.getPortCount();
@@ -58,39 +62,39 @@ input.getPortCount();
 input.getPortName(0);
 
 // Configure a callback.
-input.on('message', function(deltaTime, message) {
-  // The message is an array of numbers corresponding to the MIDI bytes:
-  //   [status, data1, data2]
-  // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
-  // information interpreting the messages.
-  console.log('m:' + message + ' d:' + deltaTime);
+input.on('message', (deltaTime, message) => {
+    // The message is an array of numbers corresponding to the MIDI bytes:
+    // [status, data1, data2]
+    // https://www.cs.cf.ac.uk/Dave/Multimedia/node158.html has some helpful
+    // information interpreting the messages.
+    console.log(`m: ${message} d: ${deltaTime}`);
 });
 
 // Open the first available input port.
 input.openPort(0);
 
-// Sysex, timing, and active sensing messages are ignored
-// by default. To enable these message types, pass false for
-// the appropriate type in the function below.
+// Sysex, timing, and active sensing messages are ignored by default. To enable
+// these message types, pass false for the appropriate type in the function below.
 // Order: (Sysex, Timing, Active Sensing)
-// For example if you want to receive only MIDI Clock beats
-// you should use
+// For example if you want to receive only MIDI Clock beats you should use
 // input.ignoreTypes(true, false, true)
 input.ignoreTypes(false, false, false);
 
 // ... receive MIDI messages ...
 
 // Close the port when done.
-input.closePort();
+if (input.isPortOpen()) {
+    input.closePort();
+}
 ```
 
 ### Output
 
 ```js
-var midi = require('midi');
+const midi = require('ab-midi');
 
 // Set up a new output.
-var output = new midi.output();
+const output = new midi.output();
 
 // Count the available output ports.
 output.getPortCount();
@@ -102,10 +106,12 @@ output.getPortName(0);
 output.openPort(0);
 
 // Send a MIDI message.
-output.sendMessage([176,22,1]);
+output.sendMessage([176, 22, 1]);
 
 // Close the port when done.
-output.closePort();
+if (output.isPortOpen()) {
+    output.closePort();
+}
 ```
 
 ### Virtual Ports
@@ -115,15 +121,17 @@ Linux with ALSA you can create a virtual device that other software may
 connect to. This can be done simply by calling openVirtualPort(portName) instead
 of openPort(portNumber).
 
+In Windows, use [loopMIDI](https://www.tobias-erichsen.de/software/loopmidi.html).
+
 ```js
-var midi = require('midi');
+const midi = require('ab-midi');
 
 // Set up a new input.
-var input = new midi.input();
+const input = new midi.input();
 
 // Configure a callback.
-input.on('message', function(deltaTime, message) {
-    console.log('m:' + message + ' d:' + deltaTime);
+input.on('message', (deltaTime, message) => {
+    console.log(`m: ${message} d: ${deltaTime}`);
 });
 
 // Create a virtual input port.
@@ -135,7 +143,9 @@ input.openVirtualPort("Test Input");
 // ... receive MIDI messages ...
 
 // Close the port when done.
-input.closePort();
+if (input.isPortOpen()) {
+    input.closePort();
+}
 ```
 
 The same can be done with output ports.
@@ -148,13 +158,13 @@ You can also use this library with streams! Here are the interfaces
 
 ```js
 // create a readable stream
-var stream1 = midi.createReadStream();
+const stream1 = midi.createReadStream();
 
 // createReadStream also accepts an optional `input` param
-var input = new midi.input();
+const input = new midi.input();
 input.openVirtualPort('hello world');
 
-var stream2 = midi.createReadStream(input)
+const stream2 = midi.createReadStream(input)
 
 stream2.pipe(require('fs').createWriteStream('something.bin'));
 ```
@@ -163,33 +173,41 @@ stream2.pipe(require('fs').createWriteStream('something.bin'));
 
 ```js
 // create a writable stream
-var stream1 = midi.createWriteStream();
+const stream1 = midi.createWriteStream();
 
 // createWriteStream also accepts an optional `output` param
-var output = new midi.output();
+const output = new midi.output();
 output.openVirtualPort('hello again');
 
-var stream2 = midi.createWriteStream(output);
+const stream2 = midi.createWriteStream(output);
 
 require('fs').createReadStream('something.bin').pipe(stream2);
 ```
 
+## Issues
+
+Submit the [issues](https://github.com/attilabuti/node-midi) if you find any bug or have any suggestion.
+
+## Contribution
+
+Fork the [repo](https://github.com/attilabuti/node-midi) and submit pull requests.
+
 ## References
 
-  * http://music.mcgill.ca/~gary/rtmidi/
-  * http://syskall.com/how-to-write-your-own-native-nodejs-extension
+* http://music.mcgill.ca/~gary/rtmidi/
+* http://syskall.com/how-to-write-your-own-native-nodejs-extension
 
 ## Maintainers
 
-  * Justin Latimer - [@justinlatimer](https://github.com/justinlatimer)
-  * Elijah Insua - [@tmpvar](https://github.com/tmpvar)
-  * Andrew Morton - [@drewish](https://github.com/drewish)
+* Justin Latimer - [@justinlatimer](https://github.com/justinlatimer)
+* Elijah Insua - [@tmpvar](https://github.com/tmpvar)
+* Andrew Morton - [@drewish](https://github.com/drewish)
 
 ## Contributors
 
-  * Luc Deschenaux - [@luxigo](https://github.com/luxigo)
-  * Michael Alyn Miller - [@malyn](https://github.com/malyn)
-  * Hugo Hromic - [@hhromic](https://github.com/hhromic)
+* Luc Deschenaux - [@luxigo](https://github.com/luxigo)
+* Michael Alyn Miller - [@malyn](https://github.com/malyn)
+* Hugo Hromic - [@hhromic](https://github.com/hhromic)
 
 ## License
 

@@ -1,50 +1,58 @@
 {
-  "name": "midi",
-  "version": "0.9.5",
-  "scripts": {
-    "test": "mocha test/unit-tests.js && node test/virtual-loopback-test-automated.js"
-  },
-  "main": "midi.js",
-  "description": "MIDI hardware IO",
-  "author": {
-    "name": "Justin Latimer",
-    "email": "justinlatimer@gmail.com",
-    "url": "http://www.justinlatimer.com/"
-  },
-  "contributors": [
-    {
-      "name": "Elijah Insua",
-      "email": "tmpvar@gmail.com"
+    "name": "ab-midi",
+    "version": "0.9.6",
+    "scripts": {
+        "test": "mocha test/unit-tests.js && node test/virtual-loopback-test-automated.js"
     },
-    {
-      "name": "Andrew Morton",
-      "email": "drewish@katherinehouse.com"
+    "main": "midi.js",
+    "description": "MIDI hardware IO",
+    "keywords": [
+        "midi"
+    ],
+    "author": {
+        "name": "Attila Buti",
+        "email": "hello@attilabuti.com"
     },
-    {
-      "name": "Luc Deschenaux",
-      "email": "luc.deschenaux@freesurf.ch"
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Justin Latimer",
+            "email": "justinlatimer@gmail.com",
+            "url": "http://www.justinlatimer.com/"
+        },
+        {
+            "name": "Elijah Insua",
+            "email": "tmpvar@gmail.com"
+        },
+        {
+            "name": "Andrew Morton",
+            "email": "drewish@katherinehouse.com"
+        },
+        {
+            "name": "Luc Deschenaux",
+            "email": "luc.deschenaux@freesurf.ch"
+        },
+        {
+            "name": "Michael Alyn Miller",
+            "email": "malyn@strangegizmo.com"
+        },
+        {
+            "name": "Hugo Hromic"
+        }
+    ],
+    "engines": {
+        "node": ">=0.8.0"
     },
-    {
-      "name": "Michael Alyn Miller",
-      "email": "malyn@strangegizmo.com"
+    "dependencies": {
+        "bindings": "~1.3.0",
+        "nan": "^2.10.0"
     },
-    {
-      "name": "Hugo Hromic"
+    "devDependencies": {
+        "mocha": "^5.1.1",
+        "should": "^13.2.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/attilabuti/node-midi.git"
     }
-  ],
-  "engines": {
-    "node": ">=0.8.0"
-  },
-  "dependencies": {
-    "bindings": "~1.2.1",
-    "nan": "^2.3.3"
-  },
-  "devDependencies": {
-    "mocha": ">= 2.1.0",
-    "should": ">= 5.0.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/justinlatimer/node-midi.git"
-  }
 }

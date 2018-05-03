@@ -1,2 +1,6 @@
+.clang-format
+.editorconfig
+.gitignore
+.travis.yml
 .lock-wscript
 build/*
