@@ -15,12 +15,22 @@ environment:
     - nodejs_version: "7"
     - nodejs_version: "8"
 
+matrix:
+  allow_failures:
+    - nodejs_version: "0.10"
+
 branches:
   only:
     - master
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - ps: if ($env:nodejs_version -eq "5") { npm i npm@latest -g }
+  - ps: >-
+      if ($env:nodejs_version -eq "0.10") {
+        npm -g install npm@3
+        $env:PATH="$env:APPDATA\npm;$env:PATH"
+      }
   - npm install
 
 test_script:
@@ -28,4 +38,5 @@ test_script:
   - npm --version
 
 deploy: off
+
 build: off
