@@ -14,6 +14,7 @@ environment:
     - nodejs_version: "6"
     - nodejs_version: "7"
     - nodejs_version: "8"
+    - nodejs_version: "9"
 
 matrix:
   allow_failures:
@@ -25,7 +26,7 @@ branches:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - ps: if ($env:nodejs_version -eq "5") { npm i npm@latest -g }
+  - ps: if ($env:nodejs_version -eq "5") { npm i npm@next -g }
   - ps: >-
       if ($env:nodejs_version -eq "0.10") {
         npm -g install npm@3
