@@ -31,11 +31,18 @@ branches:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - ps: if ($env:nodejs_version -eq "5") { npm install npm@3 -g }
+  - ps: >-
+      if ($env:nodejs_version -eq "2" -Or $env:nodejs_version -eq "3" -Or $env:nodejs_version -eq "5") {
+        npm install npm@3 -g
+      }
   - ps: >-
       if ($env:nodejs_version -eq "0.10" -Or $env:nodejs_version -eq "0.8") {
-        npm -g install npm@3
+        npm install npm@3 -g
         $env:PATH="$env:APPDATA\npm;$env:PATH"
+      }
+  - ps: >-
+      if ($env:nodejs_version -eq "0.8") {
+        npm config set strict-ssl false
       }
   - npm install
 
