@@ -33,21 +33,21 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - ps: >-
       if ($env:nodejs_version -eq "5") {
-        npm install npm@3 -g
+        npm -g install npm@3
       }
   - ps: >-
       if ($env:nodejs_version -eq "2" -Or $env:nodejs_version -eq "3") {
-        npm install npm@next -g
+        npm -g install npm@latest
       }
   - ps: >-
       if ($env:nodejs_version -eq "0.10") {
-        npm install npm@3 -g
+        npm -g install npm@3
         $env:PATH="$env:APPDATA\npm;$env:PATH"
       }
   - ps: >-
       if ($env:nodejs_version -eq "0.8") {
         npm config set strict-ssl false
-        npm install npm@3 -g
+        npm -g install npm@3
         $env:PATH="$env:APPDATA\npm;$env:PATH"
       }
   - npm install
