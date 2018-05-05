@@ -37,7 +37,7 @@ install:
       }
   - ps: >-
       if ($env:nodejs_version -eq "2" -Or $env:nodejs_version -eq "3") {
-        npm update npm -g
+        npm install npm@next -g
       }
   - ps: >-
       if ($env:nodejs_version -eq "0.10") {
