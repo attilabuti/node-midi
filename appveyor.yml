@@ -21,10 +21,6 @@ environment:
     - nodejs_version: "2"
     - nodejs_version: "3"
 
-matrix:
-  allow_failures:
-    - nodejs_version: "0.8"
-
 branches:
   only:
     - master
@@ -37,7 +33,7 @@ install:
       }
   - ps: >-
       if ($env:nodejs_version -eq "2" -Or $env:nodejs_version -eq "3") {
-        npm -g install npm@latest
+        npm -g install npm
       }
   - ps: >-
       if ($env:nodejs_version -eq "0.10") {
