@@ -7,6 +7,7 @@ image:
 
 environment:
   matrix:
+    - nodejs_version: "0.8"
     - nodejs_version: "0.10"
     - nodejs_version: "0.12"
     - nodejs_version: "4"
@@ -15,10 +16,14 @@ environment:
     - nodejs_version: "7"
     - nodejs_version: "8"
     - nodejs_version: "9"
+    # io.js
+    - nodejs_version: "1"
+    - nodejs_version: "2"
+    - nodejs_version: "3"
 
 matrix:
   allow_failures:
-    - nodejs_version: "0.10"
+    - nodejs_version: "0.8"
 
 branches:
   only:
@@ -26,9 +31,9 @@ branches:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - ps: if ($env:nodejs_version -eq "5") { npm i npm@next -g }
+  - ps: if ($env:nodejs_version -eq "5") { npm install npm@3 -g }
   - ps: >-
-      if ($env:nodejs_version -eq "0.10") {
+      if ($env:nodejs_version -eq "0.10" -Or $env:nodejs_version -eq "0.8") {
         npm -g install npm@3
         $env:PATH="$env:APPDATA\npm;$env:PATH"
       }
