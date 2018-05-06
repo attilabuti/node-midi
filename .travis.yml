@@ -1,8 +1,8 @@
-language: node_js
-
 os:
   - linux
   - osx
+
+language: node_js
 
 node_js:
   - "0.8"
@@ -38,12 +38,7 @@ notifications:
   email: false
 
 before_install:
-  - if [ $TRAVIS_OS_NAME == "linux" ]; then
-      export CC="gcc-4.8";
-      export CXX="g++-4.8";
-      export LINK="gcc-4.8";
-      export LINKXX="g++-4.8";
-    fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" -a "$CC" == "gcc" ]; then export CC=gcc-4.8; export CXX=g++-4.8; fi
   - gcc --version
   - g++ --version
 
@@ -62,4 +57,5 @@ install:
     esac
 
 script:
+  - export CXX=g++-4.8
   - npm install
