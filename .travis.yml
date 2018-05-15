@@ -19,6 +19,12 @@ node_js:
   - "iojs-v2"
   - "iojs"
 
+matrix:
+  allow_failures:
+    - node_js: "0.12"
+    - node_js: "iojs-v1"
+    - node_js: "iojs-v2"
+
 branches:
   only:
     - master
@@ -41,10 +47,7 @@ notifications:
   email: false
 
 before_install:
-  - '[ "${TRAVIS_NODE_VERSION}" == "5" ] || npm -g install npm@3'
-  - '[ "${TRAVIS_NODE_VERSION}" == "0.10" ] || npm -g install npm@3'
   - '[ "${TRAVIS_NODE_VERSION}" == "0.8" ] || npm conf set strict-ssl false && npm -g install npm@3'
-  - if [[ ${TRAVIS_NODE_VERSION} == "0.12" && ${TRAVIS_OS_NAME} == "osx" ]]; then npm -g install npm@3; fi
 
 # Travis has no snd-dummy driver (https://github.com/travis-ci/travis-ci/issues/1754)
 # preventing our tests from running. Instead we disable the default `npm install`
